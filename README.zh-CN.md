@@ -24,6 +24,6 @@ Kafka、Redis、MongoDB 及行为驱动推荐有直接代码依据。现有推�
 
 完整步骤见 [运行说明](docs/RUNNING.md)。需要 JDK 8、Maven、MySQL、MongoDB、Redis、Kafka。前端随后端打包，可访问 `http://127.0.0.1:8080/index.html`。
 
-当前机器没有 JDK/Maven，Docker 服务也未启动。已完成静态检查，另配置 GitHub Actions 编译验证；不声称已在本地跑通全部服务。历史登录和权限控制较弱，仅用于本地虚构数据演示。文件筛选、修复与测试边界见 [整理记录](docs/SOURCE_REVIEW.md)。
+当前机器没有 JDK/Maven，Docker 服务也未启动。已完成静态检查，GitHub Actions 中后端与推荐计算模块均已编译打包通过；不声称已在本地跑通全部服务。历史登录和权限控制较弱，仅用于本地虚构数据演示。文件筛选、修复与测试边界见 [整理记录](docs/SOURCE_REVIEW.md)。
 
 2026 年整理时补做了配置外置、Scala 编译配置、打包资源读取、推荐用户历史隔离、候选过滤和 Redis 连接释放等修复；它们不是 2023 年已完成工作的证明。原始资料与第三方资产来源说明见 [THIRD_PARTY.md](THIRD_PARTY.md)。

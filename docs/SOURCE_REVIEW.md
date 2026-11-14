@@ -27,3 +27,7 @@ Build products, IDE files, duplicate frontend/backend variants, raw SQL/CSV dump
 ## Verification scope
 
 Maven XML, notebook JSON, Python AST and browser-script syntax are checked locally. Raw data and credential exclusions are checked before upload. Java/Scala compilation runs in GitHub Actions; no local JVM toolchain is installed. No live multi-service run, scraping job, production readiness or recommendation quality benchmark is claimed. The original Spring context test requires live infrastructure and is skipped by the compile workflow.
+
+## Confirmed remote build
+
+On 2026-11-14, GitHub Actions successfully packaged both backend and streaming modules using JDK 8. The workflow intentionally uses `-DskipTests`, so this confirms compilation and packaging, not a live end-to-end integration test. [Build run](https://github.com/kyprettyyy/rental-recommendation-system/actions/runs/43582265191).

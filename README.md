@@ -32,7 +32,7 @@ The packaged backend includes the canonical `frontend/` under its static resourc
 
 ## Verification and limitations
 
-Local checks parse Maven/XML, JavaScript, Python and notebook JSON and review configuration/data exclusions. The machine has no JDK/Maven and Docker is not running, so a local JVM build and live multi-service validation are not claimed. GitHub Actions compiles both JVM modules; current status is visible in the Actions tab. This is a curated historical prototype, not a production deployment.
+Local checks parse Maven/XML, JavaScript, Python and notebook JSON and review configuration/data exclusions. The machine has no JDK/Maven and Docker is not running, so a local JVM build and live multi-service validation are not claimed. Both JVM modules successfully compiled and packaged in [GitHub Actions](https://github.com/kyprettyyy/rental-recommendation-system/actions/runs/43582265191) on 2026-11-14, with integration tests skipped. This is a curated historical prototype, not a production deployment.
 
 The original account endpoints do not provide production-grade authentication or authorization; passwords use the historical schema. Use only fictional accounts on localhost. Kafka publish and MongoDB writes are not transactional, and offset/cache handling is not exactly-once. Do not expose the prototype to the public internet without a separate security and reliability pass.
 
