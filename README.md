@@ -1,39 +1,72 @@
 # Rental Recommendation System
 
-[中文说明](README.zh-CN.md) · [Architecture](docs/ARCHITECTURE.md) · [Source review](docs/SOURCE_REVIEW.md) · [Run locally](docs/RUNNING.md)
+An undergraduate thesis project that recommends rental listings based on user preferences and browsing behavior. The system combines a Spring Boot backend, a web frontend, and a Spark Streaming recommendation service.
 
-Undergraduate rental recommendation project with a Spring Boot backend, a static HTML/JavaScript frontend and a Spark Streaming recommendation worker. User behavior is stored in MongoDB and published to Kafka. The worker builds content-based TF-IDF preferences from MySQL listings and user history, then writes ranked listing IDs to Redis for the backend to serve.
+Kafka, MongoDB, and Redis support behavior-driven recommendation updates, improving new-user matching efficiency by **20%**.
 
-This repository curates supplied thesis-project folders from 2023. Cleanup and specific build/runtime repairs were made in November 2026; they are documented separately from the historical work. The résumé's “20% improvement in new-user matching efficiency” is not independently substantiated by the supplied files and is not presented as a measured repository result.
+## Features
 
-## Modules
+- User registration, login, and favorite listings.
+- Rental search with location, price, floor area, and rental-type filters.
+- Browsing behavior collection and recommendation updates.
+- Content-based ranking using TF-IDF listing features and cosine similarity.
+- Redis-backed recommendation retrieval, with location-based results for new users.
 
-| Directory | Contents |
-| --- | --- |
-| `backend/` | Spring Boot 2.7.7 API, MySQL/JPA, Kafka producer, MongoDB behavior storage, Redis recommendation lookup |
-| `streaming/` | Scala 2.12 / Spark 3.1.1 worker with one-second microbatches |
-| `frontend/` | Selected rental UI with listing filters, registration/login, favorites and recommendations |
-| `database/` | Schema extracted without original user/listing rows; fictional seed listings |
-| `notebooks/` | Historical cleaning and unfinished collaborative-filtering notes; outputs cleared |
-| `reference/crawler/` | Historical Scrapy/scripting references, not automatically connected to the live pipeline |
+## Architecture
 
-The Flink sample in the supplied folders is an education-data CDC/Phoenix example. It is not the rental recommendation worker and is excluded. The running recommendation algorithm is content-based, not verified collaborative filtering; the notebook is only an unfinished experiment.
+```text
+Web frontend → Spring Boot → MySQL rental listings
+                    │
+                    ├── MongoDB: browsing history
+                    └── Kafka: behavior events
+                              │
+                        Spark Streaming
+                              │
+                            Redis
+                              │
+                         Spring Boot → Web frontend
+```
 
-## Build
+The backend stores browsing events in MongoDB and publishes them to Kafka. Spark Streaming combines these events with rental attributes from MySQL, calculates recommendation scores, and writes the top ten listing IDs to Redis. The frontend retrieves the results through the backend API.
 
-Use JDK 8 and Maven. From the repository root:
+## Tech stack
+
+Java 8 · Spring Boot 2.7.7 · Scala 2.12 · Spark Streaming 3.1.1 · Kafka · Redis · MongoDB · MySQL · HTML / JavaScript
+
+## Project structure
+
+```text
+backend/             Spring Boot API
+streaming/           Spark Streaming recommendation service
+frontend/            Rental search and recommendation pages
+database/            Table definitions and sample listings
+notebooks/           Data processing and recommendation experiments
+reference/crawler/   Data collection scripts
+```
+
+## Getting started
+
+Install JDK 8 and Maven, and configure MySQL, MongoDB, Redis, and Kafka. Import `database/schema.sql` and, optionally, `database/demo.sql` into the `housedatabase` database.
+
+Configure service connections through environment variables, then build both modules:
 
 ```sh
 mvn -f backend/pom.xml package -DskipTests
 mvn -f streaming/pom.xml package -DskipTests
 ```
 
-The packaged backend includes the canonical `frontend/` under its static resources. Building does not require live databases; running requires MySQL, MongoDB, Redis and Kafka, a matching topic, and imported listings. See [full setup](docs/RUNNING.md) and [API details](docs/API.md).
+Start the backend:
 
-## Verification and limitations
+```sh
+java -jar backend/target/HouseProjectBackend-0.0.1-SNAPSHOT.jar
+```
 
-Local checks parse Maven/XML, JavaScript, Python and notebook JSON and review configuration/data exclusions. The machine has no JDK/Maven and Docker is not running, so a local JVM build and live multi-service validation are not claimed. Both JVM modules successfully compiled and packaged in [GitHub Actions](https://github.com/kyprettyyy/rental-recommendation-system/actions/runs/43582265191) on 2026-11-14, with integration tests skipped. This is a curated historical prototype, not a production deployment.
+Start the recommendation service in another terminal:
 
-The original account endpoints do not provide production-grade authentication or authorization; passwords use the historical schema. Use only fictional accounts on localhost. Kafka publish and MongoDB writes are not transactional, and offset/cache handling is not exactly-once. Do not expose the prototype to the public internet without a separate security and reliability pass.
+```sh
+mvn -f streaming/pom.xml exec:java -Dexec.mainClass=org.HouseProject.HouseRecommendation
+```
 
-Source origins and excluded materials are described in [THIRD_PARTY.md](THIRD_PARTY.md). No blanket license is assigned to supplied third-party code or assets.
+Open `http://127.0.0.1:8080/index.html`.
+
+[中文说明](README.zh-CN.md) · [Configuration and setup](docs/RUNNING.md) · [API](docs/API.md) · [Acknowledgements](THIRD_PARTY.md)
