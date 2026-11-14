@@ -1,0 +1,13 @@
+target/
+.idea/
+*.iml
+__pycache__/
+.ipynb_checkpoints/
+node_modules/
+.env
+*.log
+*.csv
+*.jar
+*.war
+*.class
+.DS_Store
