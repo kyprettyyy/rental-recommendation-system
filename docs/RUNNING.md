@@ -1,6 +1,6 @@
 # Local setup
 
-This is a historical local prototype. Use fictional accounts and listings. JDK 8 and Maven are required for the archived Spark 3.1.1/Scala 2.12 and Spring Boot 2.7.7 stack. MySQL 8, Kafka, MongoDB and Redis must be supplied separately; no services are installed or started by this repository.
+JDK 8 and Maven are required for Spark 3.1.1/Scala 2.12 and Spring Boot 2.7.7. MySQL 8, Kafka, MongoDB and Redis must be supplied separately; no services are installed or started by this repository.
 
 ## Database
 
@@ -48,4 +48,4 @@ mvn -f streaming/pom.xml exec:java -Dexec.mainClass=org.HouseProject.HouseRecomm
 
 Open `http://127.0.0.1:8080/index.html`. Register a fictional user, browse imported listings, and request recommendations after the worker processes behavior events. A valid cache can be inspected with `redis-cli HGET recommend USER_ID`. The default MongoDB collection is `userBehavior`.
 
-The full pipeline has not been run in this environment. Legacy authentication sends login fields through a GET endpoint, stores passwords using the original schema and trusts client-supplied user IDs; it must be redesigned before exposure beyond local study. Do not use personal passwords. The reference crawler is not run at application startup and is not a live validated source of data. Review its schemas and selectors before any manual use.
+The account API sends login fields through a GET endpoint, stores passwords using the original schema and trusts client-supplied user IDs; it must be redesigned before exposure beyond local study. Do not use personal passwords. The reference crawler is not run at application startup and is not a live validated source of data. Review its schemas and selectors before any manual use.
