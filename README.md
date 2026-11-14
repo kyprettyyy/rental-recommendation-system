@@ -69,4 +69,4 @@ mvn -f streaming/pom.xml exec:java -Dexec.mainClass=org.HouseProject.HouseRecomm
 
 Open `http://127.0.0.1:8080/index.html`.
 
-[中文说明](README.zh-CN.md) · [Configuration and setup](docs/RUNNING.md) · [API](docs/API.md) · [Acknowledgements](THIRD_PARTY.md)
+[Configuration and setup](docs/RUNNING.md) · [API](docs/API.md) · [Acknowledgements](THIRD_PARTY.md)
