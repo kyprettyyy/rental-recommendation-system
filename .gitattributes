@@ -1,0 +1,5 @@
+# Language statistics focus on backend and recommendation source code.
+# The template-based UI remains available and keeps its normal highlighting.
+frontend/** linguist-detectable=false
+# Reference collection scripts are not part of the application runtime.
+reference/** linguist-vendored

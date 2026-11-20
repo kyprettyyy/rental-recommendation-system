@@ -2,7 +2,20 @@
 
 An undergraduate thesis project that recommends rental listings based on user preferences and browsing behavior. The system combines a Spring Boot backend, a web frontend, and a Spark Streaming recommendation service.
 
-Kafka, MongoDB, and Redis support behavior-driven recommendation updates, improving new-user matching efficiency by **20%**.
+Kafka carries behavior events, MongoDB stores browsing history, and Redis caches the top ten recommendation IDs per user. New users receive province-filtered listings when no cached recommendations exist.
+
+## Core implementation
+
+- **Backend:** Spring Boot APIs for rental search, user accounts, favorites, behavior collection, and recommendation retrieval.
+- **Recommendation:** Spark Streaming consumes Kafka events in one-second microbatches; Spark ML builds 150-dimensional TF-IDF listing vectors and ranks candidates by cosine similarity.
+- **Behavior feedback:** MongoDB stores browsing history; the worker excludes previously viewed listings and writes the top ten IDs to Redis. Reading cached results requests a history-based refresh.
+- **Cold start:** province-filtered MySQL results provide a fallback before a personalized cache exists.
+
+## Scope and evidence
+
+This undergraduate prototype implements content-based recommendation. It does not establish collaborative filtering, exactly-once event processing, production scalability, or a measured 20% improvement. A one-second microbatch interval is a configuration value, not a measured end-to-end latency guarantee. See [architecture and limitations](docs/ARCHITECTURE.md).
+
+The GitHub language bar is configured to summarize backend and recommendation source code: the template-based `frontend/` is excluded from language statistics, and `reference/` is treated as reference code. Frontend files remain in the repository. Percentages describe this selected source scope, not engineering effort or technology importance.
 
 ## Features
 
